@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% block content %}
+
+<h2>👤 Mi Perfil</h2>
+
+<ul>
+    <li><strong>Usuario:</strong> {{ usuario.username }}</li>
+    <li><strong>Correo:</strong> {{ usuario.email }}</li>
+    <li><strong>Rol:</strong> 
+        {% for r in roles %}{{ r.name }}{% empty %}Sin rol{% endfor %}
+    </li>
+</ul>
+
+<li><a href="{% url 'cambiar-contrasena' %}">Cambiar contraseña</a></li>
+<a href="{% url 'home' %}">← Volver al inicio</a>
+
+{% endblock %}

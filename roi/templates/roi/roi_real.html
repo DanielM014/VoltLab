@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>📈 Análisis de ROI Real por Máquina</h2>
+
+{% if error %}
+  <div style="color: red;">⚠️ {{ error }}</div>
+{% else %}
+<div style="margin-bottom: 20px;">
+  <p><strong>📅 Mes activo:</strong> {{ mes_activo.get_mes_display }} {{ mes_activo.anio }}</p>
+  <p><strong>💵 Precio del kWh aplicado:</strong> {{ precio_kwh|floatformat:2 }} COP</p>
+  <p><strong>💰 Inversión estimada:</strong> {{ inversion|floatformat:0 }} COP</p>
+
+  <form method="post" style="margin-top:10px;">
+    {% csrf_token %}
+    <label for="id_inversion"><strong>Modificar inversión (COP):</strong></label>
+    {{ form.inversion }}
+    <button type="submit">Actualizar</button>
+  </form>
+</div>
+
+<table border="1" cellpadding="8" cellspacing="0" style="width:100%; background:#fff; border-collapse: collapse; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+  <thead style="background:#003366; color:white;">
+    <tr>
+      <th>Máquina</th>
+      <th>Horas trabajadas</th>
+      <th>Consumo (kWh)</th>
+
+      <th>Ahorro 20% (kWh)</th>
+      <th>Ahorro 20% (COP)</th>
+      <th>ROI 20% (años)</th>
+      <th>Clasificación 20%</th>
+      <th>Conclusión 20%</th>
+
+      <th>Ahorro 30% (kWh)</th>
+      <th>Ahorro 30% (COP)</th>
+      <th>ROI 30% (años)</th>
+      <th>Clasificación 30%</th>
+      <th>Conclusión 30%</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    {% for resultado in datos %}
+      <tr style="text-align:center;">
+        <td><strong>{{ resultado.maquina }}</strong></td>
+        <td>{{ resultado.horas }}</td>
+        <td>{{ resultado.consumo|floatformat:2 }}</td>
+
+        <td>{{ resultado.ahorro_20_kwh|floatformat:2 }}</td>
+        <td>{{ resultado.ahorro_20_cop|floatformat:0 }}</td>
+        <td>{% if resultado.roi_20 %}{{ resultado.roi_20 }}{% else %}-{% endif %}</td>
+        <td>{{ resultado.clasificacion_20 }}</td>
+        <td>{{ resultado.conclusion_20|safe }}</td>
+
+        <td>{{ resultado.ahorro_30_kwh|floatformat:2 }}</td>
+        <td>{{ resultado.ahorro_30_cop|floatformat:0 }}</td>
+        <td>{% if resultado.roi_30 %}{{ resultado.roi_30 }}{% else %}-{% endif %}</td>
+        <td>{{ resultado.clasificacion_30 }}</td>
+        <td>{{ resultado.conclusion_30|safe }}</td>
+      </tr>
+    {% empty %}
+      <tr><td colspan="13">⚠️ No hay datos de consumo para este mes.</td></tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br>
+<a href="{% url 'home' %}">← Volver al menú principal</a>
+{% endif %}
+{% endblock %}

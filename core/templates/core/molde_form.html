@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{% if object %}Editar{% else %}Crear{% endif %} Molde</h2>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Guardar</button>
+</form>
+<a href="{% url 'molde-list' %}">Volver</a>
+
+{% endblock %}

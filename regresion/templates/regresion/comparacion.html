@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>🔍 Comparación de Predicción vs Consumo Estimado</h2>
+
+{% if error %}
+<p style="color:red;">{{ error }}</p>
+{% else %}
+<p><strong>Mes activo:</strong> {{ mes_activo.get_mes_display }} {{ mes_activo.anio }}</p>
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Molde</th>
+      <th>Máquina</th>
+      <th>Horas</th>
+      <th>Piezas</th>
+      <th>Real (kWh)</th>
+      <th>Predicho (kWh)</th>
+      <th>Diferencia</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for comp in comparaciones %}
+    <tr>
+      <td>{{ comp.registro.molde.nombre }}</td>
+      <td>{{ comp.registro.maquina.nombre }}</td>
+      <td>{{ comp.registro.horas_trabajadas }}</td>
+      <td>{{ comp.registro.piezas_producidas }}</td>
+      <td>{{ comp.real }}</td>
+      <td>{{ comp.predicho }}</td>
+      <td style="color: {% if comp.diferencia > 0 %}green{% else %}red{% endif %};">
+        {{ comp.diferencia }}
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<h3>📊 Comparación gráfica</h3>
+<div>
+  {{ plot_div|safe }}
+</div>
+
+<a href="{% url 'home' %}">← Volver</a>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>{% if object %}Editar{% else %}Nueva{% endif %} Asignación de Piezas</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+
+    {% if form.errors %}
+        <div style="color: red;">
+            {{ form.errors }}
+        </div>
+    {% endif %}
+
+    {% if form.molde.value %}
+        <hr>
+        {% with molde_id=form.molde.value %}
+            {% for m in form.molde.field.queryset %}
+                {% if m.id|stringformat:"s" == molde_id %}
+                    <p><strong>Piezas necesarias para el molde:</strong> {{ m.piezas_necesarias }}</p>
+                    <p>
+                        <strong>Piezas ya asignadas:</strong>
+                        {% with total=0 %}
+                            {% for asignacion in m.moldemaquinariaasignacion_set.all %}
+                                {% if form.instance.id and asignacion.id != form.instance.id %}
+                                    {% with total=total|add:asignacion.piezas_asignadas %}
+                                    {% endwith %}
+                                {% endif %}
+                            {% endfor %}
+                            {{ total }}
+                            <br>
+                            <strong>Piezas restantes:</strong> {{ m.piezas_necesarias|add:"-total" }}
+                        {% endwith %}
+                    </p>
+                {% endif %}
+            {% endfor %}
+        {% endwith %}
+    {% endif %}
+
+    <button type="submit">Guardar</button>
+</form>
+
+<a href="{% url 'asignacion-list' %}">← Volver a asignaciones</a><br>
+<a href="{% url 'home' %}">🏠 Volver al inicio</a>
+
+{% endblock %}

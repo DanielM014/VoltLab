@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Historial de Precios del kWh</h2>
+<h2>📈 Historial de Precios de Energía</h2>
+{% if mes_activo %}
+<p><strong>Mes activo:</strong> {{ mes_activo.get_mes_display }} {{ mes_activo.anio }}</p>
+{% endif %}
+
+<table border="1" cellpadding="5">
+  <thead>
+    <tr>
+      <th>Fecha</th>
+      <th>Valor (COP)</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for precio in precios %}
+      <tr>
+        <td>{{ precio.fecha_registro }}</td>
+        <td>{{ precio.valor_kwh }}</td>
+      </tr>
+    {% empty %}
+      <tr>
+        <td colspan="2">No hay precios registrados.</td>
+      </tr>
+    {% endfor %}
+  </tbody>
+</table>
+
+<br>
+<a href="{% url 'precio-energia' %}">⚙️ Editar precio actual</a><br>
+<a href="{% url 'home' %}">← Volver al inicio</a>
+
+{% endblock %}

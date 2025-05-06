@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h2>Lista de Moldes</h2>
+
+<a href="{% url 'molde-crear' %}">+ Nuevo Molde</a>
+
+<ul>
+  {% for molde in moldes %}
+    <li>
+      <strong>{{ molde.id }} - {{ molde.nombre }}</strong> ({{ molde.piezas_necesarias }} piezas)
+      <br>
+      <em>Máquinas necesarias:</em>
+      <ul>
+        {% for asignacion in molde.asignaciones.all %}
+          <li>{{ asignacion.maquina.nombre }} ({{ asignacion.piezas_asignadas }} piezas)</li>
+        {% empty %}
+          <li>No hay máquinas asignadas</li>
+        {% endfor %}
+      </ul>
+
+      <a href="{% url 'molde-editar' molde.id %}">Editar</a> |
+      <a href="{% url 'molde-eliminar' molde.id %}">Eliminar</a>
+    </li>
+  {% empty %}
+    <li>No hay moldes registrados aún.</li>
+  {% endfor %}
+</ul>
+
+<a href="{% url 'home' %}">← Volver al menú principal</a>
+{% endblock %}

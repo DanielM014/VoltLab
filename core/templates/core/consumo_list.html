@@ -1,0 +1,58 @@
+{% extends "base.html" %}
+
+{% block content %}
+{% load tz %} 
+
+<h2>📋 Registros de Consumo</h2>
+
+
+{% if mes_activo %}
+  <h4>📆 Mostrando consumos de: {{ mes_activo.get_mes_display }} {{ mes_activo.anio }}</h4>
+{% else %}
+  <p>⚠️ No hay un mes activo seleccionado.</p>
+{% endif %}
+
+<a href="{% url 'consumo-crear' %}">+ Nuevo Registro</a>
+
+
+{% if object_list %}
+
+
+  <table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+      <tr>
+        <th>Fecha</th>
+        <th>Molde</th>
+        <th>Máquina</th>
+        <th>Horas</th>
+        <th>Piezas</th>
+        <th>Consumo (kWh)</th>
+        <th>Costo (COP)</th>
+        <th>Finalización Estimada</th>
+        <th>Opciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      {% for r in object_list %}
+        <tr>
+          <td>{{ r.fecha }}</td>
+          <td>{{ r.molde.nombre }}</td>
+          <td>{{ r.maquina.nombre }}</td>
+          <td>{{ r.horas_trabajadas }}</td>
+          <td>{{ r.piezas_producidas }}</td>
+          <td>{{ r.consumo_estimado }}</td>
+          <td>{{ r.costo_estimado }}</td>
+          <td>{{ r.fecha_hipotetica_finalizacion|default:"-" }}</td>
+          <td>
+            <a href="{% url 'consumo-eliminar' r.id %}">🗑 Eliminar</a>
+          </td>
+        </tr>
+      {% endfor %}
+    </tbody>
+  </table>
+{% else %}
+  <p>No hay registros aún.</p>
+{% endif %}
+
+<a href="{% url 'home' %}">🏠 Volver al inicio</a>
+{% endblock %}

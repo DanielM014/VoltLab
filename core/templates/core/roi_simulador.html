@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+<h2>Simulador de ROI (Retorno de Inversión)</h2>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Calcular</button>
+</form>
+
+{% if resultados %}
+  <hr>
+  <h3>Resultados:</h3>
+  <ul>
+    <li><strong>Potencia de la máquina:</strong> {{ resultados.potencia_kw }} kW</li>
+    <li><strong>Consumo mensual estimado:</strong> {{ resultados.consumo_mensual }} kWh</li>
+    <li><strong>Costo mensual actual:</strong> {{ resultados.costo_mensual_actual }} COP</li>
+    <li><strong>Ahorro mensual proyectado:</strong> {{ resultados.ahorro_mensual }} COP</li>
+    <li><strong>Tiempo de retorno estimado:</strong>
+      {% if resultados.tiempo_retorno_anios %}
+        {{ resultados.tiempo_retorno_anios|floatformat:1 }} años
+      {% else %}
+        No hay retorno (sin ahorro)
+      {% endif %}
+    </li>
+    <li><strong>Clasificación:</strong> {{ resultados.clasificacion }}</li>
+  </ul>
+  <li><strong>Horas promedio mensuales (calculadas):</strong> {{ resultados.horas_promedio|floatformat:1 }}</li>
+  <li><strong>Precio del kWh usado:</strong> {{ resultados.precio_kwh }} COP</li>
+
+{% endif %}
+
+<a href="{% url 'home' %}">← Volver al inicio</a>
+
+{% endblock %}

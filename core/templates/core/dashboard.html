@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>📊 Dashboard de Consumo Energético</h2>
+
+<form method="get">
+    {{ form.as_p }}
+    <button type="submit">Aplicar filtros</button>
+</form>
+
+<hr>
+
+<h3>📌 Resumen mensual</h3>
+<ul>
+    <li>🕒 Horas trabajadas: <strong>{{ total_horas }}</strong></li>
+    <li>🧩 Piezas producidas: <strong>{{ total_piezas }}</strong></li>
+    <li>🔋 Consumo total (kWh): <strong>{{ total_consumo|floatformat:2 }}</strong></li>
+    <li>💰 Costo total (COP): <strong>${{ total_costo|floatformat:0 }}</strong></li>
+</ul>
+
+<hr>
+
+<h3>🔋 Consumo por máquina</h3>
+<div>
+    {{ grafico_consumo|safe }}
+</div>
+
+<h3>💰 Costo por máquina</h3>
+<div>
+    {{ grafico_costo|safe }}
+</div>
+
+<br>
+<a href="{% url 'home' %}">← Volver al menú</a>
+
+{% endblock %}

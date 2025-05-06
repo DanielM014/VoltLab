@@ -1,0 +1,75 @@
+{% extends "base.html" %}
+
+{% block title %}VoltLAB - Inicio{% endblock %}
+
+{% block content %}
+<h2>Bienvenido {{ request.user.username }} 
+    ({{ request.user.groups.first.name|default:"sin rol" }})
+</h2>
+
+<!-- Sección de Cuenta -->
+<section class="card">
+    <h3>👤 Mi Cuenta</h3>
+    <ul class="menu-list">
+        <li><a href="{% url 'perfil-usuario' %}">📄 Ver mi Perfil</a></li>
+        <li><a href="{% url 'cambiar-contrasena' %}">🔐 Cambiar Contraseña</a></li>
+    </ul>
+</section>
+
+<!-- Sección de Maquinaria -->
+<section class="card">
+    <h3>🛠️ Gestión de Maquinaria</h3>
+    <ul class="menu-list">
+        <li><a href="{% url 'maquinaria-list' %}">🛠️ Maquinaria</a></li>
+        <li><a href="{% url 'molde-list' %}">🧩 Moldes</a></li>
+        <li><a href="{% url 'asignacion-list' %}">🔧 Asignación de Moldes</a></li>
+        <li><a href="{% url 'consumo-list' %}">⚡ Registro de Consumo Energético</a></li>
+    </ul>
+</section>
+
+
+<!-- Sección de Análisis -->
+<section class="card">
+    <h3>📈 Análisis y Predicción</h3>
+    <ul class="menu-list">
+        <li><a href="{% url 'dashboard' %}">📊 Dashboard de Consumo</a></li>
+        <li><a href="{% url 'roi-real' %}">📈 ROI Real por Máquina</a></li>
+        <li><a href="{% url 'comparacion-modelo' %}">🤖 Comparación Real vs Predicho</a></li>
+        <li><a href="{% url 'prediccion-consumo' %}">🔬 Predicción de Consumo Futuro</a></li>
+        <li><a href="{% url 'exportar-reporte-excel' %}">📥 Descargar Reporte Mensual</a></li>
+    </ul>
+</section>
+
+<!-- Sección de Gestión de Usuarios -->
+<section class="card">
+    <h3>👥 Gestión de Usuarios</h3>
+    <ul class="menu-list">
+        <li><a href="{% url 'crear-usuario' %}">➕ Crear Nuevo Usuario</a></li>
+        <li><a href="{% url 'lista-usuarios' %}">🔄 Cambiar Roles / Editar Usuarios</a></li>
+    </ul>
+</section>
+
+
+{% if user.is_staff %}
+<!-- Sección de Ajustes -->
+<section class="card">
+    <h3>⚙️ Ajustes Administrativos</h3>
+    <ul class="menu-list">
+        <li><a href="{% url 'precio-energia' %}">⚙️ Ajustar Precio del kWh</a></li>
+        <li><a href="{% url 'precio-historial' %}">📜 Historial de Precios</a></li>
+        <li><a href="{% url 'mes-activo' %}">📅 Cambiar Mes Activo</a></li>
+    </ul>
+</section>
+{% endif %}
+
+
+
+<!-- Botón de cerrar sesión -->
+<div class="logout">
+    <form method="post" action="{% url 'logout' %}">
+        {% csrf_token %}
+        <button type="submit">Cerrar sesión</button>
+    </form>
+</div>
+
+{% endblock %}
