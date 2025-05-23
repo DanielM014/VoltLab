@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>🧠 Predicción de Consumo Futuro</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.as_p }}
+  <button type="submit">🔮 Predecir</button>
+</form>
+
+{% if enviada %}
+<hr>
+<h3>📈 Resultado de la predicción:</h3>
+
+<ul style="list-style: none; padding-left: 0;">
+  <li><strong>Consumo estimado:</strong> {{ prediccion|floatformat:2 }} kWh</li>
+  <li><strong>Costo energético estimado:</strong> ${{ costo_estimado|floatformat:0 }} COP</li>
+  <li><strong>Conclusión:</strong> {{ conclusion|safe }}</li>
+</ul>
+
+<a href="{% url 'home' %}">← Volver al inicio</a>
+{% endif %}
+
+{% endblock %}
+

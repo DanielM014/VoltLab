@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>¿Eliminar molde?</h2>
+<p>{{ object }}</p>
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Sí, eliminar</button>
+</form>
+<a href="{% url 'molde-list' %}">Cancelar</a>
+
+{% endblock %}

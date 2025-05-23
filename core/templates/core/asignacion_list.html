@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+
+<h2>Asignación de Moldes a Máquinas</h2>
+<a href="{% url 'asignacion-crear' %}">+ Nueva Asignación</a>
+
+{% if asignaciones %}
+  {% regroup asignaciones by molde as molde_asignaciones %}
+  <ul>
+    {% for grupo in molde_asignaciones %}
+      <li>
+        <strong>Molde: {{ grupo.grouper.nombre }}</strong>
+        <ul>
+          {% for a in grupo.list %}
+            <li>
+              Máquina: {{ a.maquina.nombre }} | Piezas asignadas: {{ a.piezas_asignadas }}
+              [<a href="{% url 'asignacion-editar' a.id %}">Editar</a>]
+              [<a href="{% url 'asignacion-eliminar' a.id %}">Eliminar</a>]
+            </li>
+          {% endfor %}
+        </ul>
+      </li>
+    {% endfor %}
+  </ul>
+{% else %}
+  <p>No hay asignaciones aún.</p>
+{% endif %}
+
+<hr>
+<a href="{% url 'home' %}">← Volver al menú principal</a>
+
+{% endblock %}

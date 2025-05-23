@@ -1,0 +1,86 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h2>Nuevo Registro de Consumo</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {% if form.errors %}
+    <div style="color: red;">{{ form.errors }}</div>
+  {% endif %}
+
+
+  <p>{{ form.operario.label_tag }}<br> 
+    {{ form.operario }}</p>
+
+  <p>
+    <label for="id_molde">Molde:</label><br>
+    {{ form.molde }}
+  </p>
+
+  <p>
+    <label for="id_maquina">Máquina:</label><br>
+    {{ form.maquina }}
+  </p>
+
+  <p>
+    <label for="id_horas_trabajadas">Horas trabajadas:</label><br>
+    {{ form.horas_trabajadas }}
+  </p>
+
+  <p>
+    <label for="id_piezas_producidas">Piezas producidas:</label><br>
+    {{ form.piezas_producidas }}
+  </p>
+
+  <p>
+    <label for="id_fecha">Fecha:</label><br>
+    {{ form.fecha }}
+  </p>
+
+  <p>
+    <label for="id_fecha_hipotetica_finalizacion">Fecha hipotética de finalización:</label><br>
+    {{ form.fecha_hipotetica_finalizacion }}
+  </p>
+
+  <p>
+    <label for="id_precio_kwh_mes">Precio del kWh mes:</label><br>
+    {{ form.precio_kwh_mes }} <small>Se obtiene del recibo mensual</small>
+  </p>
+
+  <button type="submit">Guardar</button>
+</form>
+
+<a href="{% url 'consumo-list' %}">← Volver</a><br>
+
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script>
+$(document).ready(function(){
+    $('#id_molde').change(function(){
+        var moldeId = $(this).val();
+        if(moldeId){
+            $.ajax({
+                url: "{% url 'ajax-obtener-maquinas' %}",
+                data: {
+                    'molde_id': moldeId
+                },
+                success: function(data){
+                    var $maquinaSelect = $("#id_maquina");
+                    $maquinaSelect.empty();
+                    $maquinaSelect.append('<option value="">Seleccione una máquina</option>');
+                    $.each(data, function(index, maquina){
+                        $maquinaSelect.append('<option value="' + maquina.id + '">' + maquina.nombre + '</option>');
+                    });
+                }
+            });
+        } else {
+            $("#id_maquina").empty();
+            $("#id_maquina").append('<option value="">Seleccione una máquina</option>');
+        }
+    });
+});
+</script>
+
+{% endblock %}

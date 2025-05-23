@@ -1,0 +1,21 @@
+{% extends 'base.html' %}
+{% block content %}
+<h2>🧑‍💻 Crear Nuevo Usuario</h2>
+
+<form method="post">
+  {% csrf_token %}
+  {{ form.username.label_tag }} {{ form.username }}<br><br>
+  {{ form.email.label_tag }} {{ form.email }}<br><br>
+  {{ form.password.label_tag }} {{ form.password }}<br><br>
+
+  <label>Seleccionar Rol existente:</label><br>
+  {{ form.grupo_existente }}<br><br>
+
+  <label>O crear nuevo rol:</label><br>
+  {{ form.nuevo_rol }}<br><br>
+
+  <button type="submit">Crear usuario</button>
+</form>
+
+<a href="{% url 'lista-usuarios' %}">← Volver a la lista</a>
+{% endblock %}
