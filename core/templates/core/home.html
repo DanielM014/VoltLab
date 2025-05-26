@@ -27,7 +27,7 @@
     </ul>
 </section>
 
-
+{% if user.is_staff %}
 <!-- Sección de Análisis -->
 <section class="card">
     <h3>📈 Análisis y Predicción</h3>
@@ -50,7 +50,7 @@
 </section>
 
 
-{% if user.is_staff %}
+
 <!-- Sección de Ajustes -->
 <section class="card">
     <h3>⚙️ Ajustes Administrativos</h3>
